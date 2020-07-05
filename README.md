@@ -8,7 +8,7 @@ Tracking the impact of COVID-19 in India
   </tr>
   <tr>
     <td style=“margin:10px;”><img src="assets/Services.jpg" style=“margin:10px;” width="350"></td>
-    <td style=“margin:10px;”><img src="aassets/DemoGraphics.jpg" style=“margin:10px;” width="350"></td>
+    <td style=“margin:10px;”><img src="assets/DemoGraphics.jpg" style=“margin:10px;” width="350"></td>
   </tr>
 </table>
 
