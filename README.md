@@ -1,11 +1,16 @@
 # covid19mobApp
 Tracking the impact of COVID-19 in India 
-<p>
-  <img src="assets/HomePage.jpg" style=“margin:10px;” width="350">
-  <img src="assets/DistrictPage.jpg" style=“margin:10px;” width="350">
-  <img src="assets/Services.jpg" style=“margin:10px;” width="350">
-  <img src="assets/DemoGraphics.jpg" style=“margin:10px;” width="350">
-</p>
+
+<table>
+  <tr>
+    <td><img src="assets/HomePage.jpg" style=“margin:10px;” width="350"></td>
+    <td><img src="assets/DistrictPage.jpg" style=“margin:10px;” width="350"></td>
+  </tr>
+  <tr>
+    <td><img src="assets/Services.jpg" style=“margin:10px;” width="350"></td>
+    <td><img src="assets/DemoGraphics.jp style=“margin:10px;” width="350"></td>
+  </tr>
+</table>
 
 <h2> Name : Covid19 Mobile App </h2>
 <h3> Technologies : React-native js </h3> 
