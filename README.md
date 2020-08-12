@@ -3,12 +3,11 @@ Tracking the impact of COVID-19 in India
 
 <table>
   <tr>
-    <td style=“margin:10px;”><img src="assets/HomePage.jpg" style=“margin:10px;” width="350"></td>
-    <td style=“margin:10px;”><img src="assets/DistrictPage.jpg" style=“margin:10px;” width="350"></td>
+    <td style=“margin:10px;”><img src="assets/gif.gif" style=“margin:10px;” width="350"></td>
   </tr>
   <tr>
-    <td style=“margin:10px;”><img src="assets/Services.jpg" style=“margin:10px;” width="350"></td>
-    <td style=“margin:10px;”><img src="assets/DemoGraphics.jpg" style=“margin:10px;” width="350"></td>
+    <td style=“margin:10px;”><img src="assets/zone.gif" style=“margin:10px;” width="350"></td>
+    <td style=“margin:10px;”><img src="assets/services.gif" style=“margin:10px;” width="350"></td>
   </tr>
 </table>
 
