@@ -3,7 +3,7 @@ Tracking the impact of COVID-19 in India
 
 <table>
   <tr>
-    <td style=“margin:10px;”><img src="assets/gif.gif" style=“margin:10px;” width="350"></td>
+    <td style=“margin:10px;”><img src="assets/gif.gif" style=“margin:40px;” width="500"></td>
   </tr>
   <tr>
     <td style=“margin:10px;”><img src="assets/zone.gif" style=“margin:10px;” width="350"></td>
