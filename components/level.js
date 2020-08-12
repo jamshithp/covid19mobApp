@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     fontFamily:'open-sans-bold',
   },
   heading1:{
-    fontSize: 20,
+    fontSize: 18,
     fontFamily:'open-sans-bold',
   },
   cherry:{
