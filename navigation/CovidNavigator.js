@@ -3,26 +3,27 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import {
-  createStackNavigator,
-  createBottomTabNavigator,
   createAppContainer,
-  createDrawerNavigator
 } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import HomeScreen from '../screens/HomeScreen';
 import StateScreen from '../screens/StateScreen';
-import UpdateScreen from '../screens/UpdateScreen';
+import VaccinationScreen from '../screens/Vaccination';
 import ServicesScreen from '../screens/EssentialsScreen';
-import patientDbScreen from '../screens/patientDbScreen';
 import ZoneDetailsScreen from '../screens/ZoneDetailsScreen';
 import {Colors} from '../constants';
+import { AntDesign } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 const HomeNavigator = createStackNavigator(
   {
     Home: HomeScreen,
     state: StateScreen,
-    Updates:UpdateScreen,
+    Vaccination:VaccinationScreen,
     ZoneDetails:ZoneDetailsScreen,
   },
   {
@@ -48,24 +49,9 @@ const ServicesNavigator = createStackNavigator(
     }
   }
 );
-const NewsNavigator = createStackNavigator(
+const VaccinationNavigator = createStackNavigator(
   {
-    News:UpdateScreen,
-    Home: HomeScreen,
-  },
-  {
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: Platform.OS === 'android' ? Colors.primary : ''
-      },
-      headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
-    }
-  }
-);
-
-const DemographicsNavigator = createStackNavigator(
-  {
-    patientsDB:patientDbScreen,
+    vaccination:VaccinationScreen,
     Home: HomeScreen,
   },
   {
@@ -96,11 +82,26 @@ const tabScreenConfig = {
         )
     }
   },
+  vaccination: {
+    screen: VaccinationNavigator,
+    navigationOptions: {
+      tabBarIcon: tabInfo => {
+        return <MaterialCommunityIcons name="hospital-marker" size={25} color={tabInfo.tintColor}/>
+      },
+      tabBarColor: Colors.accentColor,
+      tabBarLabel:
+        Platform.OS === 'android' ? (
+          <Text >Vaccination</Text>
+        ) : (
+          'Vaccination'
+        )
+    }
+  },
   Services: {
     screen: ServicesNavigator,
     navigationOptions: {
       tabBarIcon: tabInfo => {
-        return <Ionicons name="md-contacts" size={25} color={tabInfo.tintColor} />;
+        return  <AntDesign name="customerservice" size={25} color={tabInfo.tintColor}  />
       },
       tabBarColor: Colors.accentColor,
       tabBarLabel:
@@ -108,21 +109,6 @@ const tabScreenConfig = {
           <Text >Services</Text>
         ) : (
           'Services'
-        )
-    }
-  },
-  Demographics: {
-    screen: DemographicsNavigator,
-    navigationOptions: {
-      tabBarIcon: tabInfo => {
-        return <Ionicons name="md-cube" size={25} color={tabInfo.tintColor} />;
-      },
-      tabBarColor: Colors.accentColor,
-      tabBarLabel:
-        Platform.OS === 'android' ? (
-          <Text >Demographics</Text>
-        ) : (
-          'Demographics'
         )
     }
   },
@@ -157,16 +143,16 @@ const MainNavigator = createDrawerNavigator(
         drawerLabel: 'Home'
       }
     },
+    vaccination: {
+      screen: VaccinationNavigator,
+      navigationOptions: {
+        drawerLabel: 'Vaccination'
+      }
+    },
     Essentials: {
       screen: ServicesNavigator,
       navigationOptions: {
         drawerLabel: 'Services'
-      }
-    },
-    Demographics: {
-      screen: DemographicsNavigator,
-      navigationOptions: {
-        drawerLabel: 'Demographics'
       }
     },
   },

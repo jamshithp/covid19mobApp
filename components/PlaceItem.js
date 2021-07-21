@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Share } from 'react-na
 import {Colors} from '../constants';
 import { Ionicons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
+import { FontAwesome } from '@expo/vector-icons';
 
 
 class PlaceItem extends Component {
@@ -47,7 +48,7 @@ class PlaceItem extends Component {
             <Text style={styles.item}>Confirmed: {item.confirmed}</Text>
             {showdeltaConfirmed &&
             <View style={styles.ItemContainer}>
-              <Ionicons name="md-arrow-round-up" size={18} color={'red'} />
+              <Ionicons name="md-arrow-up" size={18} color={'red'} />
               <Text style={styles.subitemRed}>{isState ? item.deltaconfirmed : item.delta.confirmed}</Text>
             </View>}
           </View>
@@ -56,7 +57,7 @@ class PlaceItem extends Component {
             <Text style={styles.item}>Recovered: {item.recovered}</Text>
             {showdeltaRecovered &&
             <View style={styles.ItemContainer}>
-              <Ionicons name="md-arrow-round-up" size={18} color={'green'} />
+              <Ionicons name="md-arrow-up" size={18} color={'green'} />
               <Text style={styles.subitemGreen}>{isState ? item.deltarecovered : item.delta.recovered}</Text>
             </View>}
           </View>
@@ -64,7 +65,7 @@ class PlaceItem extends Component {
             <Text style={styles.item}>Deaths: {isState ?item.deaths:item.deceased}</Text>
             {showdeltaDeath &&
             <View style={styles.ItemContainer}>
-              <Ionicons name="md-arrow-round-up" size={18} color={'grey'} />
+              <Ionicons name="md-arrow-up" size={18} color={'grey'} />
               <Text style={styles.subitemGrey}>{isState ? item.deltadeaths : item.delta.deaths}</Text>
             </View>}
           </View>
@@ -72,7 +73,7 @@ class PlaceItem extends Component {
         {isState && 
         <View style={styles.shareBtn}>
         <TouchableOpacity  onPress={()=>this.onShare()}>
-          <Ionicons name="md-share-alt" size={30} color={'red'} />
+          <FontAwesome name="share-square-o" size={30} color={'red'}/>
         </TouchableOpacity>
         </View>}
       </TouchableOpacity>
@@ -179,25 +180,25 @@ const styles = StyleSheet.create({
   },
   item: {
     color: '#666',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily:'open-sans-bold',
     padding:5,
   },
   subitemRed:{
     color: 'red',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily:'open-sans',
     padding:5,
   },
   subitemGreen:{
     color: 'green',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily:'open-sans',
     padding:5,
   },
   subitemGrey:{
     color: 'grey',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily:'open-sans',
     padding:5,
   }

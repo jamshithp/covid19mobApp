@@ -41,7 +41,6 @@ export default function ServicesScreen() {
           hashmap[x['state']][x['city']][x['category']].push(x);
       });
 
-      console.log("hashmap",hashmap)
 
       setResourceDict(hashmap);
       // setIndianState(Object.keys()[0]);
@@ -160,7 +159,6 @@ export default function ServicesScreen() {
   };
   const changeCategory = function (itemValue) {
     setCategory(itemValue);
-    // console.log(changedcategoryevent.target.value);
   };
   const appendData = function () {
     const tempArr = partData.concat(
@@ -170,11 +168,8 @@ export default function ServicesScreen() {
   };
 
   const filterTable = function () {
-    // console.log('Search Button Pressed');
-    // console.log(`Filters are: ${indianstate} ---> ${city} ----> ${category}`);
     let a = [];
     if (category === 'all') {
-      // console.log("All category selected");
       if (city === 'all') {
         if (indianstate === 'all') {
           Object.values(resourcedict).forEach((state) => {

@@ -13,8 +13,8 @@ import {
 import PlaceItem from '../components/PlaceItem';
 import {STATE_CODES} from '../constants';
 import Level from '../components/level';
-import PushNotification from '../components/PushNotification';
-import ZoneInfo from '../components/ZoneInfo';
+//import PushNotification from '../components/PushNotification';
+//import ZoneInfo from '../components/ZoneInfo';
 
 import Expo from 'expo';
 
@@ -98,14 +98,14 @@ function HomeScreen(props) {
   
     return (
       <View>
-        <ZoneInfo 
+        {/* <ZoneInfo 
         districtZones={districtZones}
         onPress={(zone) => {
           props.navigation.navigate('ZoneDetails', {
             zone: zone,
           });
         }}
-        />
+        /> */}
         {getLevel(states)}
         <FlatList
           data={sortedStates.slice(1)}
@@ -129,7 +129,7 @@ function HomeScreen(props) {
             />
           )}
         />
-        <PushNotification/>
+        {/* <PushNotification/> */}
       </View>
     );
   }
@@ -137,7 +137,7 @@ function HomeScreen(props) {
 HomeScreen.navigationOptions = navData => {
   return {
     headerTitle: 'COVID19 STATE WISE',
-    headerRight: (
+    headerRight:()=>
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Updates"
@@ -147,8 +147,8 @@ HomeScreen.navigationOptions = navData => {
           }}
         />
       </HeaderButtons>
-    ),
-    headerLeft: (
+    ,
+    headerLeft: ()=>
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
@@ -158,7 +158,6 @@ HomeScreen.navigationOptions = navData => {
           }}
         />
       </HeaderButtons>
-    )
   };
 };
 

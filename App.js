@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import CovidNavigator from './navigation/CovidNavigator';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
+import AppLoading from 'expo-app-loading';
 import { enableScreens  } from 'react-native-screens';
-import PushNotification from './components/PushNotification';
 
 enableScreens();
 
@@ -27,9 +26,10 @@ export default function App() {
       <AppLoading
         startAsync={fetchFonts}
         onFinish={() => setFontLoaded(true)}
+        onError={console.warn}
       />
     );
   }
 
-  return <CovidNavigator />;
+ return <CovidNavigator />;
 }

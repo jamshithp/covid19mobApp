@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet ,Text} from 'react-native';
 import { Tab, Tabs } from 'native-base';
 import DistrictWiseData from '../components/districtWiseData';
 import StateDetails from '../components/stateDetails';
@@ -43,6 +43,16 @@ const StateScreen = props => {
           zones={zones}
           lastupdatedtime={lastupdatedtime}
         />
+        </Tab>
+        <Tab
+        style={styles.tabHeading}
+        textStyle={styles.tabText}
+        tabStyle={{ backgroundColor: "transparent" }}
+        activeTabStyle={{ backgroundColor: "transparent" }}
+        activeTextStyle={styles.activeTextStyle}
+        heading="Services"
+      >
+       <StateServices state={states.state}/>
       </Tab>
       <Tab
         style={styles.tabHeading}
@@ -52,17 +62,7 @@ const StateScreen = props => {
         activeTextStyle={styles.activeTextStyle}
         heading="Metadata"
       >
-        <StateDetails statecode={states.statecode}/>
-      </Tab>
-      <Tab
-        style={styles.tabHeading}
-        textStyle={styles.tabText}
-        tabStyle={{ backgroundColor: "transparent" }}
-        activeTabStyle={{ backgroundColor: "transparent" }}
-        activeTextStyle={styles.activeTextStyle}
-        heading="Services"
-      >
-        <StateServices state={states.state}/>
+       <StateDetails statecode={states.statecode}/>
       </Tab>
     </Tabs>
   );
