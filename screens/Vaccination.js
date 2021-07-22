@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet ,Button } from 'react-native';
 import {getStates,getDistricts, getSlots} from "../utils/fetchAPI";
 import {Picker} from '@react-native-picker/picker';
 import moment from 'moment';
 import Slots from '../components/Slots';
+import PushNotification from '../components/PushNotification';
 
 function Vaccination(props) {
   const [stateName, setStateName] = useState("");
@@ -15,12 +16,34 @@ function Vaccination(props) {
   const [slotsList, setSlotsList] = useState([]);
   const [doseChoice, setDoseChoice] = useState("");
   const [freeSlots, setfreeslots] = useState({});
+  const [textMessageWhatsapp, setWhatsapp] = useState(false);
   
+  const state = props.navigation.getParam('state');
+  const district = props.navigation.getParam('district');
 
 
   useEffect(()=>{
     async function fetchData(){
       const listOfStates = await getStates();
+      if(district) {
+        const stateID = listOfStates.find(item=>item.state_name===state).state_id;
+        const fetchDistricts=async(ID)=>{
+          const listOfDistricts = await getDistricts(ID);
+          let districtID = listOfDistricts.find(item=> item.district_name.split(' ')[0] === district).district_id;
+          districtID = districtID == 276 ? 265 : districtID;
+          const fetchSlots = async(ID,date) => {
+            const listOfSlots = await getSlots(ID,date);
+            //console.log('listOfSlots for districts',listOfSlots,districtCode)
+            displaySlots(listOfSlots);
+            setDoseChoice('dose1')
+          }
+          let date = moment().format('DD-MM-YYYY');
+          fetchSlots(districtID,date);
+          setDistrictCode(districtID);
+          setStateCode(stateID);
+        }
+        fetchDistricts(stateID);
+      }
       setStateList(listOfStates);
     }
     fetchData();
@@ -37,7 +60,6 @@ function Vaccination(props) {
   useEffect(()=>{
     const fetchSlots = async(ID,date) => {
       const listOfSlots = await getSlots(ID,date);
-      console.log('listOfSlots',listOfSlots,districtCode)
       setSlotsList(listOfSlots);
     }
     let date = moment().format('DD-MM-YYYY');
@@ -52,12 +74,12 @@ function Vaccination(props) {
      setStateName(itemValue);
      const stateID = stateList.find(item=>item.state_name===itemValue).state_id;
      setStateCode(stateID);
+     displaySlots();
   }
 
   const handleDistrictSelect = (itemValue) => {
     setDistrictName(itemValue);
     const districtID = districtList.find(item=> item.district_name===itemValue).district_id;
-    console.log('dis',districtID)
     setDistrictCode(districtID);
     displaySlots();
   }
@@ -93,19 +115,22 @@ const getDistrictsOptions = function () {
       });
 };
 
-const displaySlots = () =>{
-  let centername; let sessions=[]; let freeSlots=[] ;
+const displaySlots = (listOfSlots) =>{
+  let centername; let sessions=[]; let freeSlots=[] ;let fee_type='';
   let whatsappMessage = "";
-  console.log('slotsList',slotsList)
-  slotsList.forEach(item=>{
+  const items = listOfSlots || slotsList;
+  //console.log('items',items)
+  items.forEach(item=>{
     sessions = item.sessions;
     sessions.forEach(val=>{
-      let dose = doseChoice =="dose1" ? val.available_capacity_dose1 : val.available_capacity_dose2;
+      let dose = doseChoice =="dose1" || listOfSlots ? val.available_capacity_dose1 : val.available_capacity_dose2;
       if(dose > 0)
         {
           centername = item.name;
+          fee_type = item.fee_type;
           let obj={openSlots:0,centerName:"",slotDate:"",vaccine:"",pincode:""};
           obj.openSlots = dose;
+          obj.fee_type = fee_type;
           obj.centerName = centername;
           obj.slotDate = val.date;
           obj.vaccine = val.vaccine;
@@ -119,52 +144,61 @@ const displaySlots = () =>{
         }
     })
   })
-  console.log('freeSlots',freeSlots)
+  //console.log('freeSlots',freeSlots);
+  textMessageWhatsapp && shareMessageWhatsApp(whatsappMessage);
   setfreeslots(freeSlots);
   }
-  // else
-  // return (
-  //   <div style={{display:"flex",marginTop: "100px"}}>
-  //     <ErrorIcon fontSize="medium" style={{width:"4.5rem" ,height:"2.5rem", color:"crimson"}}/>
-  //     <Typography variant="h4">No Slots Found</Typography>
-  // </div>
-  // )
 
+  const shareMessageWhatsApp =(str)=>{
+    if(textMessageWhatsapp)
+    {
+      window.open("https://api.whatsapp.com/send?text="+str);
+      setWhatsapp(false);
+    }
+  }
 
+  const shareWhatsApp = () => {
+    setWhatsapp(true);
+  }
 
   return (
     <ScrollView>
     <View style={styles.container}>
-      <View style={styles.option}>
-        <Text style={styles.label}>STATE</Text>
-        {stateList && (<Picker
-          selectedValue={stateName}
-          style={styles.PickerStyle}
-          onValueChange={(itemValue, itemIndex) => handleStateSelect(itemValue)}
-        >
+      {!district && 
+      <>
+        <View style={styles.option}>
+          <Text style={styles.label}>STATE</Text>
+          {stateList && (<Picker
+            selectedValue={stateName}
+            style={styles.PickerStyle}
+            onValueChange={(itemValue, itemIndex) => handleStateSelect(itemValue)}
+          >
+            <Picker.Item
+            value=" "
+            label="Select state"
+            style={styles.itemStyle}
+            />
+            {getIndianStateOptions()}
+          </Picker>)}
+        </View>
+        <View style={styles.option}>
+          <Text style={styles.label}>Districts</Text>
+          <Picker
+            selectedValue={districtName}
+            style={styles.PickerStyle}
+            onValueChange={(itemValue, itemIndex) => handleDistrictSelect(itemValue)}
+          >
           <Picker.Item
-          value=" "
-          label="Select state"
-          style={styles.itemStyle}
-          />
-          {getIndianStateOptions()}
-        </Picker>)}
-      </View>
-      <View style={styles.option}>
-        <Text style={styles.label}>Districts</Text>
-        <Picker
-          selectedValue={districtName}
-          style={styles.PickerStyle}
-          onValueChange={(itemValue, itemIndex) => handleDistrictSelect(itemValue)}
-        >
-          <Picker.Item
-          value=" "
-          label="Select districts"
-          style={styles.itemStyle}
-          />
-          {districtList && getDistrictsOptions()}
-        </Picker>
-      </View>
+            value=" "
+            label="Select districts"
+            style={styles.itemStyle}
+            />
+            {districtList && getDistrictsOptions()}
+          </Picker>
+        </View>
+      </>
+      }
+      {district && <Text style={styles.district}>{district.toUpperCase()}</Text>}
       <View style={styles.option}>
         <Text style={styles.label}>Dose</Text>
         <Picker
@@ -177,9 +211,18 @@ const displaySlots = () =>{
           <Picker.Item value={'dose2'}label = 'DOSE 2'/>
         </Picker>
       </View>
-          { freeSlots.length > 1 && freeSlots.map((item,index)=> 
+          { freeSlots.length > 0 && 
+          <>
+          <PushNotification freeSlots={freeSlots}/>
+          {freeSlots.map((item,index)=> 
          <Slots item={item} key={index}/>
           )}
+          <Button title='share whatsapp' onPress={()=>shareWhatsApp}/>
+          </>}
+          {
+            freeSlots.length === 0 &&
+            <View><Text>No slots found</Text></View>
+          }
     </View>
     </ScrollView>
   );
@@ -189,15 +232,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    alignItems: "center",
-    justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     width:'100%',
     backgroundColor:'#FFFAFA',
   },
   option:{
     display:'flex',
     flexDirection:'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
     fontFamily: 'open-sans-bold',
   },
@@ -215,6 +258,10 @@ const styles = StyleSheet.create({
     fontFamily: 'open-sans-bold',
     fontSize:15,
   },
+  district:{
+    alignItems: 'center',
+    fontSize:20,
+  }
 });
 
 Vaccination.navigationOptions = navData => {

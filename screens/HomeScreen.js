@@ -13,8 +13,8 @@ import {
 import PlaceItem from '../components/PlaceItem';
 import {STATE_CODES} from '../constants';
 import Level from '../components/level';
-//import PushNotification from '../components/PushNotification';
-//import ZoneInfo from '../components/ZoneInfo';
+import PushNotification from '../components/PushNotification';
+import DistrictSlots from '../components/DistrictSlots';
 
 import Expo from 'expo';
 
@@ -22,15 +22,7 @@ function HomeScreen(props) {
     const [states, setStates] = useState([]);
     const [stateDistrictWiseData, setStateDistrictWiseData] = useState({});
     const [districtZones, setDistrictZones] = useState(null);
-    const [stateTestData, setStateTestData] = useState({});
     const [fetched, setFetched] = useState(false);
-    const [graphOption, setGraphOption] = useState(1);
-    const [lastUpdated, setLastUpdated] = useState('');
-    const [timeseries, setTimeseries] = useState([]);
-    const [activityLog, setActivityLog] = useState([]);
-    const [timeseriesMode, setTimeseriesMode] = useState(true);
-    const [timeseriesLogMode, setTimeseriesLogMode] = useState(false);
-    const [regionHighlighted, setRegionHighlighted] = useState(undefined);
   
     useEffect(() => {
       if (fetched === false) {
@@ -63,8 +55,6 @@ function HomeScreen(props) {
 
         const ts = parseStateTimeseries(statesDailyResponse);
         ts['TT'] = preprocessTimeseries(data.cases_time_series); // TT -> India
-        setTimeseries(ts);
-        setLastUpdated(data.statewise[0].lastupdatedtime);
         const testData = stateTestData.states_tested_data.reverse();
         const totalTest = data.tested[data.tested.length - 1];
         testData.push({
@@ -73,7 +63,6 @@ function HomeScreen(props) {
           source: totalTest.source,
           state: 'Total', // India
         });
-        setStateTestData(testData);
         setStateDistrictWiseData(stateDistrictWiseResponse.data);
         setFetched(true);
       } catch (err) {
@@ -98,14 +87,14 @@ function HomeScreen(props) {
   
     return (
       <View>
-        {/* <ZoneInfo 
-        districtZones={districtZones}
-        onPress={(zone) => {
-          props.navigation.navigate('ZoneDetails', {
-            zone: zone,
+        <DistrictSlots
+        onPress={(state,district) => {
+          props.navigation.navigate('Vaccination', {
+            state:state,
+            district:district,
           });
         }}
-        /> */}
+        />
         {getLevel(states)}
         <FlatList
           data={sortedStates.slice(1)}

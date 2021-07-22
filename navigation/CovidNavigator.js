@@ -13,7 +13,6 @@ import HomeScreen from '../screens/HomeScreen';
 import StateScreen from '../screens/StateScreen';
 import VaccinationScreen from '../screens/Vaccination';
 import ServicesScreen from '../screens/EssentialsScreen';
-import ZoneDetailsScreen from '../screens/ZoneDetailsScreen';
 import {Colors} from '../constants';
 import { AntDesign } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -24,7 +23,6 @@ const HomeNavigator = createStackNavigator(
     Home: HomeScreen,
     state: StateScreen,
     Vaccination:VaccinationScreen,
-    ZoneDetails:ZoneDetailsScreen,
   },
   {
     defaultNavigationOptions: {
