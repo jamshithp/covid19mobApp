@@ -11,9 +11,7 @@ import {
 } from '../utils/common-functions';
 
 import PlaceItem from '../components/PlaceItem';
-import {STATE_CODES} from '../constants';
 import Level from '../components/level';
-import PushNotification from '../components/PushNotification';
 import DistrictSlots from '../components/DistrictSlots';
 
 import Expo from 'expo';
@@ -87,14 +85,14 @@ function HomeScreen(props) {
   
     return (
       <View>
-        <DistrictSlots
+        {/* <DistrictSlots
         onPress={(state,district) => {
           props.navigation.navigate('Vaccination', {
             state:state,
             district:district,
           });
         }}
-        />
+        /> */}
         {getLevel(states)}
         <FlatList
           data={sortedStates.slice(1)}
@@ -118,7 +116,6 @@ function HomeScreen(props) {
             />
           )}
         />
-        {/* <PushNotification/> */}
       </View>
     );
   }
