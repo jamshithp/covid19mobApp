@@ -144,12 +144,14 @@ const getDistrictsOptions = function () {
         }
     })
     })
-  textMessageWhatsapp && setTextMessageWhatsapp(whatsappMessage);
+    console.log('whatsappMessage',whatsappMessage)
+    listOfSlots && setTextMessageWhatsapp(whatsappMessage);
   setfreeslots(freeSlots);
   setFilteredSlots(freeSlots);
   }
 
   const onShare = async () => {
+    console.log('onShare',textMessageWhatsapp)
     try {
       const result = await Share.share({
         message:textMessageWhatsapp,
@@ -233,12 +235,12 @@ const getDistrictsOptions = function () {
       </View>
       </Animatable.View>
         {
-          !freeSlots.length &&
+          !freeSlots?.length &&
           <View style={styles.imageContainer}>
             <Image style={styles.stretch} source={require('../assets/download.png')} />
           </View>
         }
-        { filteredSlots.length > 0 && 
+        { filteredSlots?.length > 0 && 
         <>
         <PushNotification filteredSlots={filteredSlots}/>
         <Button title='share on whatsapp' onPress={()=>onShare()}/>

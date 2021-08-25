@@ -15,8 +15,8 @@ import VaccinationScreen from '../screens/Vaccination';
 import ServicesScreen from '../screens/EssentialsScreen';
 import UpdatesScreen from '../screens/UpdatesScreen';
 import {Colors} from '../constants';
-import { AntDesign } from '@expo/vector-icons'; 
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign ,Entypo ,MaterialCommunityIcons } from '@expo/vector-icons';
+import CovidTrendsScreen from '../screens/CovidTrendsScreen';
 
 
 const HomeNavigator = createStackNavigator(
@@ -80,6 +80,21 @@ const VaccinationNavigator = createStackNavigator(
   }
 );
 
+const CovidTrendsNavigator = createStackNavigator(
+  {
+    covidTrends:CovidTrendsScreen,
+    Home: HomeScreen,
+  },
+  {
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: Platform.OS === 'android' ? Colors.primary : ''
+      },
+      headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
+    }
+  }
+);
+
 const tabScreenConfig = {
   Home: {
     screen: HomeNavigator,
@@ -95,6 +110,21 @@ const tabScreenConfig = {
           <Text >Home</Text>
         ) : (
           'Home'
+        )
+    }
+  },
+  covidTrends: {
+    screen: CovidTrendsNavigator,
+    navigationOptions: {
+      tabBarIcon: tabInfo => {
+        return <Entypo name="area-graph" size={25} color={tabInfo.tintColor}/>
+      },
+      tabBarColor: Colors.accentColor,
+      tabBarLabel:
+        Platform.OS === 'android' ? (
+          <Text >covid Trends</Text>
+        ) : (
+          'covid Trends'
         )
     }
   },

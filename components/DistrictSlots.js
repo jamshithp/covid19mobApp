@@ -54,6 +54,7 @@ export default function DistrictSlots(props) {
           }/>
         </View>
       </View>}
+     {errorMsg && <Text>{errorMsg}</Text>}
     </View>
   );
 }
