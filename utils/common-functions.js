@@ -244,3 +244,14 @@ export const parseDistrictZones = (data) => {
     return ret;
   }, {});
 };
+
+
+
+export const abbreviateNumber = (number) => {
+  return Math.round(Math.abs(number));
+ 
+};
+
+export function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};

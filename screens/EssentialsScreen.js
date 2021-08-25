@@ -43,17 +43,13 @@ export default function ServicesScreen() {
 
 
       setResourceDict(hashmap);
-      // setIndianState(Object.keys()[0]);
 
       setFetched(true);
-      //console.log(resourcedict);
     } catch (err) {
       console.log(err);
     }
   };
   const getIndianStateOptions = function () {
-      //console.log("value",resourcedict);
-    // let defaultOption = ['Please select']
     return Object.keys(resourcedict)
       .sort()
       .map((x) => {
@@ -192,9 +188,6 @@ export default function ServicesScreen() {
         });
       }
     } else {
-      // console.log(`Category chosen ${category}`);
-      // a = resourcedict[indianstate][city][category];
-
       if (indianstate === 'all' && city === 'all') {
         Object.values(resourcedict).forEach((state) => {
           Object.values(state).forEach((citydata) => {
@@ -226,12 +219,9 @@ export default function ServicesScreen() {
         );
       }
     } catch (err) {
-      // console.log('No PAN India row found');
     }
     setData(a);
     setPartData(a.slice(0, 30));
-    // console.log(resourcedict[indianstate][city][category]);
-    // console.log(data);
     setShowTable(true);
   };
 
@@ -324,15 +314,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 30,
-    alignItems: "center",
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
     width:'100%',
     backgroundColor:'#FFFAFA',
   },
   option:{
     display:'flex',
     flexDirection:'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
     fontFamily: 'open-sans-bold',
   },
@@ -340,6 +330,7 @@ const styles = StyleSheet.create({
     padding: 10,
     fontFamily: 'open-sans-bold',
     fontSize:16,
+    width:100,
   },
   PickerStyle:{
     height: 50,

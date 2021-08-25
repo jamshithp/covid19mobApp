@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, ScrollView, StyleSheet ,Button } from 'react-native';
+import { View, Text, ScrollView, StyleSheet ,Button ,TouchableOpacity ,Share ,Image} from 'react-native';
 import {getStates,getDistricts, getSlots} from "../utils/fetchAPI";
 import {Picker} from '@react-native-picker/picker';
 import moment from 'moment';
 import Slots from '../components/Slots';
 import PushNotification from '../components/PushNotification';
+import * as Animatable from 'react-native-animatable';
 
 function Vaccination(props) {
   const [stateName, setStateName] = useState("");
@@ -16,7 +17,8 @@ function Vaccination(props) {
   const [slotsList, setSlotsList] = useState([]);
   const [doseChoice, setDoseChoice] = useState("");
   const [freeSlots, setfreeslots] = useState({});
-  const [textMessageWhatsapp, setWhatsapp] = useState(false);
+  const [filteredSlots, setFilteredSlots] = useState({});
+  const [textMessageWhatsapp, setTextMessageWhatsapp] = useState('');
   
   const state = props.navigation.getParam('state');
   const district = props.navigation.getParam('district');
@@ -33,7 +35,6 @@ function Vaccination(props) {
           districtID = districtID == 276 ? 265 : districtID;
           const fetchSlots = async(ID,date) => {
             const listOfSlots = await getSlots(ID,date);
-            //console.log('listOfSlots for districts',listOfSlots,districtCode)
             displaySlots(listOfSlots);
             setDoseChoice('dose1')
           }
@@ -115,11 +116,10 @@ const getDistrictsOptions = function () {
       });
 };
 
-const displaySlots = (listOfSlots) =>{
-  let centername; let sessions=[]; let freeSlots=[] ;let fee_type='';
-  let whatsappMessage = "";
-  const items = listOfSlots || slotsList;
-  //console.log('items',items)
+  const displaySlots = (listOfSlots) =>{
+    let centername; let sessions=[]; let freeSlots=[] ;let fee_type='';
+    let whatsappMessage = "";
+    const items = listOfSlots || slotsList;
   items.forEach(item=>{
     sessions = item.sessions;
     sessions.forEach(val=>{
@@ -143,22 +143,32 @@ const displaySlots = (listOfSlots) =>{
           freeSlots.push(obj);
         }
     })
-  })
-  //console.log('freeSlots',freeSlots);
-  textMessageWhatsapp && shareMessageWhatsApp(whatsappMessage);
+    })
+  textMessageWhatsapp && setTextMessageWhatsapp(whatsappMessage);
   setfreeslots(freeSlots);
+  setFilteredSlots(freeSlots);
   }
 
-  const shareMessageWhatsApp =(str)=>{
-    if(textMessageWhatsapp)
-    {
-      window.open("https://api.whatsapp.com/send?text="+str);
-      setWhatsapp(false);
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:textMessageWhatsapp,
+        title:"Vaccine Slot availabilty",
+        url:"https://reactnativemaster.com/react-native-camera-expo-example/"
+      });
+    } catch (error) {
+      alert(error.message);
     }
+  };
+
+  const handleFreeVaccineSelect = () => {
+    const filteredSolts = freeSlots.filter(slot => slot.fee_type === 'Free');
+    setFilteredSlots(filteredSolts);
   }
 
-  const shareWhatsApp = () => {
-    setWhatsapp(true);
+  const handlePaidVaccineSelect = () => {
+    const filteredSolts = freeSlots.filter(slot => slot.fee_type !== 'Free')
+    setFilteredSlots(filteredSolts);
   }
 
   return (
@@ -211,18 +221,35 @@ const displaySlots = (listOfSlots) =>{
           <Picker.Item value={'dose2'}label = 'DOSE 2'/>
         </Picker>
       </View>
-          { freeSlots.length > 0 && 
-          <>
-          <PushNotification freeSlots={freeSlots}/>
-          {freeSlots.map((item,index)=> 
-         <Slots item={item} key={index}/>
-          )}
-          <Button title='share whatsapp' onPress={()=>shareWhatsApp}/>
-          </>}
-          {
-            freeSlots.length === 0 &&
-            <View><Text>No slots found</Text></View>
-          }
+      <Animatable.View
+        duration={700}
+        //transition="backgroundColor"
+        animation="slideInRight"
+      >
+      <View style={styles.filter}>
+        <Text style={styles.label}>Filter by</Text>
+        <TouchableOpacity  style={styles.filterButton}><Text style={styles.free} onPress={()=>handleFreeVaccineSelect()}>Free</Text></TouchableOpacity>
+        <TouchableOpacity  style={styles.filterButton}><Text style={styles.paid} onPress={()=>handlePaidVaccineSelect()}>Paid</Text></TouchableOpacity>
+      </View>
+      </Animatable.View>
+        {
+          !freeSlots.length &&
+          <View style={styles.imageContainer}>
+            <Image style={styles.stretch} source={require('../assets/download.png')} />
+          </View>
+        }
+        { filteredSlots.length > 0 && 
+        <>
+        <PushNotification filteredSlots={filteredSlots}/>
+        <Button title='share on whatsapp' onPress={()=>onShare()}/>
+        {filteredSlots.map((item,index)=> 
+        <Slots item={item} key={index}/>
+        )}
+        </>}
+        {
+          filteredSlots?.length === 0 &&
+          <View><Text>No slots found</Text></View>
+        }
     </View>
     </ScrollView>
   );
@@ -231,8 +258,8 @@ const displaySlots = (listOfSlots) =>{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    alignItems: 'center',
+    padding: 10,
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
     width:'100%',
     backgroundColor:'#FFFAFA',
@@ -248,6 +275,7 @@ const styles = StyleSheet.create({
     padding: 10,
     fontFamily: 'open-sans-bold',
     fontSize:16,
+    width:100,
   },
   PickerStyle:{
     height: 50,
@@ -261,7 +289,39 @@ const styles = StyleSheet.create({
   district:{
     alignItems: 'center',
     fontSize:20,
-  }
+  },
+  filter:{
+    display:'flex',
+    flexDirection:'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  filterButton:{
+    fontSize: 15,
+    margin:8,
+    fontFamily:'open-sans-bold',
+    padding:10,
+    backgroundColor:'white',
+    borderColor:'black',
+    borderWidth:2,
+    width:60,
+    borderRadius:8,
+    height:40,
+    elevation: 4,
+  },
+  free:{
+    color: 'green',
+    fontWeight: 'bold',
+  },
+  paid:{
+    color: 'red',
+    fontWeight: 'bold',
+  },
+  stretch: {
+    width: 400,
+    height: 400,
+    resizeMode: 'stretch',
+  },
 });
 
 Vaccination.navigationOptions = navData => {

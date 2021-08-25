@@ -15,6 +15,7 @@ import axios from 'axios';
 import {format, parse} from 'date-fns';
 import React, {useRef, useState,useEffect} from 'react';
 import { ScrollView, View, Text, StyleSheet ,ActivityIndicator} from 'react-native';
+import VaccinationGraph from './VaccinationGraph';
 
 function State(props) {
   const [allStateData, setAllStateData] = useState({});
@@ -87,7 +88,6 @@ function State(props) {
 
   const testObjLast = testData[testData.length - 1];
   const population = STATE_POPULATIONS[stateName];
-
 
     return (
       <View style={[styles.container,styles[loader]]}>

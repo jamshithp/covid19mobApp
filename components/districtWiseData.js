@@ -5,18 +5,20 @@ import Level from '../components/level';
 import {
     formatDateAbsolute,
   } from '../utils/common-functions';
+import VaccinationGraph from './VaccinationGraph';
 
 
 const DistrictWiseData = (props) => {
-    const [scrollY,setScrollY] = useState(new Animated.Value(0));
-    return (
-        <View>
-             <Text style={styles.lastupdatedtime}>
-          Last Updated on{' '}
-          {props.districts && Object.keys(props.districts[0]).length
-            ? formatDateAbsolute(props.lastupdatedtime)
-            : ''}
-        </Text>
+  const [scrollY,setScrollY] = useState(new Animated.Value(0));
+  return (
+    <View>
+      <Text style={styles.lastupdatedtime}>
+        Last Updated on{' '}
+        {props.districts && Object.keys(props.districts[0]).length
+        ? formatDateAbsolute(props.lastupdatedtime)
+        : ''}
+      </Text>
+      {props.vaccinationData?.total && <VaccinationGraph data={props.vaccinationData}/>}
       <View>
         <Level data={props.states}/>
       </View>
@@ -31,18 +33,18 @@ const DistrictWiseData = (props) => {
               }
             ]
         )}>
-      {props.districts.map(district =>
-        <PlaceItem
-        title={district.name}
-        item={district}
-        key={item => item.id}
-        zones={props.zones[district.name]}
-        screen='district'
-      />
-      )}
-       </Animated.ScrollView>
+        {props.districts.map(district =>
+          <PlaceItem
+          title={district.name}
+          item={district}
+          key={district.id}
+          zones={props.zones[district.name]}
+          screen='district'
+        />
+        )}
+      </Animated.ScrollView>
     </View>
-    )
+  )
 }
 
 const styles = StyleSheet.create({

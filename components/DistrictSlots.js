@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Platform, Text, View, StyleSheet,Button } from 'react-native';
-import Constants from 'expo-constants';
 import * as Location from 'expo-location';
 import axios from 'axios';
+import VaccinationGraph from './VaccinationGraph';
 
 export default function DistrictSlots(props) {
   const [Currentstate, setCurrentstate] = useState(null);
@@ -39,18 +39,22 @@ export default function DistrictSlots(props) {
   });
 
   return (
-      fetch && 
+    <View>
+      {props.data?.total && <VaccinationGraph data={props.data}/>}
+      {fetch && 
       <View style={[styles.container]}>
         <View style={styles.textContainer}>
-          <Text style={styles.paragraph}>You are in {district}</Text>
+          <Text style={styles.paragraph}>Current Location : {district} </Text>
+          <Text style={styles.paragraph}>See vaccine slot availability</Text>
         </View>
         <View style={styles.button}>
-        <Button
-        title="See Slot Availability"
-        onPress={() => props.onPress(Currentstate,district)
-        }/>
+          <Button
+          title="Search"
+          onPress={() => props.onPress(Currentstate,district)
+          }/>
         </View>
-      </View>
+      </View>}
+    </View>
   );
 }
 
@@ -59,26 +63,27 @@ const styles = StyleSheet.create({
       display:"flex",
       width:'100%',
       backgroundColor:'#FFFAFA',
-      padding:30,
+      padding:25,
       height:100,
-      margin:8,
-      justifyContent:'center',
+      margin:15,
+      justifyContent:'space-around',
       flexDirection:'row',
      alignItems:'center'
     },
     paragraph:{
-      fontSize:16,
+      fontSize:14,
       fontFamily: 'open-sans-bold',
+      margin:5
     },
     button:{
       color:'blue',
-      maxWidth:180,
-      margin:5,
+      maxWidth:100,
+      margin:3,
       borderRadius:50,
     },
     textContainer:{
-      // display:'flex',
-      // flexDirection:'column',
-      // margin:0,
-    }
+      display:'flex',
+      flexDirection:'column',
+      margin:0,
+    },
   });

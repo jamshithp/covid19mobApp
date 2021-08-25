@@ -13,6 +13,7 @@ import HomeScreen from '../screens/HomeScreen';
 import StateScreen from '../screens/StateScreen';
 import VaccinationScreen from '../screens/Vaccination';
 import ServicesScreen from '../screens/EssentialsScreen';
+import UpdatesScreen from '../screens/UpdatesScreen';
 import {Colors} from '../constants';
 import { AntDesign } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -23,6 +24,7 @@ const HomeNavigator = createStackNavigator(
     Home: HomeScreen,
     state: StateScreen,
     Vaccination:VaccinationScreen,
+    Updates:UpdatesScreen,
   },
   {
     defaultNavigationOptions: {
@@ -47,6 +49,22 @@ const ServicesNavigator = createStackNavigator(
     }
   }
 );
+
+const NewsNavigator = createStackNavigator(
+  {
+    News:UpdatesScreen,
+    Home: HomeScreen,
+  },
+  {
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: Platform.OS === 'android' ? Colors.primary : ''
+      },
+      headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
+    }
+  }
+);
+
 const VaccinationNavigator = createStackNavigator(
   {
     vaccination:VaccinationScreen,

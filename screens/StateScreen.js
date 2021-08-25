@@ -10,7 +10,8 @@ const StateScreen = props => {
   const districtData = props.navigation.getParam('districtData'),
     states = props.navigation.getParam('states'),
     zones=props.navigation.getParam('zones'),
-    lastupdatedtime=props.navigation.getParam('lastUpdated');
+    lastupdatedtime=props.navigation.getParam('lastUpdated'),
+    vaccinationData= props.navigation.getParam('vaccinationData');
   const districts =  Object.keys(districtData).sort(
     (a, b) =>
       districtData[b].confirmed -
@@ -21,7 +22,6 @@ const StateScreen = props => {
       return district;
     }
     );
-
 
   return (
     <Tabs
@@ -42,6 +42,7 @@ const StateScreen = props => {
           states={states}
           zones={zones}
           lastupdatedtime={lastupdatedtime}
+          vaccinationData={vaccinationData}
         />
         </Tab>
         <Tab

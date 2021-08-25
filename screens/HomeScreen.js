@@ -19,6 +19,7 @@ import Expo from 'expo';
 function HomeScreen(props) {
     const [states, setStates] = useState([]);
     const [stateDistrictWiseData, setStateDistrictWiseData] = useState({});
+    const [mainData,setMainData] = useState([]);
     const [districtZones, setDistrictZones] = useState(null);
     const [fetched, setFetched] = useState(false);
   
@@ -34,9 +35,11 @@ function HomeScreen(props) {
         const [
           {data: statesDailyResponse},
           {data: zonesResponse},
+          {data: mainStatesData},
         ] = await Promise.all([
           axios.get('https://api.covid19india.org/states_daily.json'),
           axios.get('https://api.covid19india.org/zones.json'),
+          axios.get('https://data.covid19india.org/v4/min/data.min.json'),
         ]);
 
         const [
@@ -49,6 +52,7 @@ function HomeScreen(props) {
           axios.get('https://api.covid19india.org/state_test_data.json'),
         ]);
         setStates(data.statewise);
+        setMainData(mainStatesData);
         setDistrictZones(parseDistrictZones(zonesResponse.zones));
 
         const ts = parseStateTimeseries(statesDailyResponse);
@@ -85,14 +89,15 @@ function HomeScreen(props) {
   
     return (
       <View>
-        {/* <DistrictSlots
+        <DistrictSlots
+        data={mainData.TT}
         onPress={(state,district) => {
           props.navigation.navigate('Vaccination', {
             state:state,
             district:district,
           });
         }}
-        /> */}
+        />
         {getLevel(states)}
         <FlatList
           data={sortedStates.slice(1)}
@@ -110,7 +115,8 @@ function HomeScreen(props) {
                   districtData:districtData,
                   zones:districtZones[itemData.item.state],
                   states:itemData.item,
-                  lastUpdated:itemData.item.lastupdatedtime
+                  lastUpdated:itemData.item.lastupdatedtime,
+                  vaccinationData:mainData[itemData.item.statecode],
                 });
               }}
             />
@@ -122,7 +128,7 @@ function HomeScreen(props) {
 
 HomeScreen.navigationOptions = navData => {
   return {
-    headerTitle: 'COVID19 STATE WISE',
+    headerTitle: 'COVID19 INDIA',
     headerRight:()=>
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item

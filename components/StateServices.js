@@ -37,7 +37,6 @@ const StateServices = (props) => {
           ]);
           const hashmap = {};
           response.data.resources.forEach((x) => {
-            // console.log(x)
             if (typeof hashmap[x['state']] === 'undefined')
               hashmap[x['state']] = {};
             if (typeof hashmap[x['state']][x['city']] === 'undefined')
@@ -83,7 +82,6 @@ const StateServices = (props) => {
       };
       
       const filterTable = function (itemValue = 'all') {
-       // console.log(`Filters are: ${indianstate} ---> ${city} ----> ${category}----> ${resourcedict}`);
         let a = [];
         if (itemValue=== 'all') {
               Object.values(resourcedict[indianstate]).forEach((citydata) => {
