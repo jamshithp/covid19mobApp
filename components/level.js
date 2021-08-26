@@ -6,17 +6,9 @@ import * as Animatable from 'react-native-animatable';
 function Level(props) {
   const [data, setData] = useState(props.data);
 
-  useEffect(() => {
-    setData({
-      active: +props.data.active,
-      confirmed: +props.data.confirmed,
-      recovered: +props.data.recovered,
-      deaths: +props.data.deaths,
-      deltaconfirmed: +props.data.deltaconfirmed,
-      deltadeaths: +props.data.deltadeaths,
-      deltarecovered: +props.data.deltarecovered,
-    });
-  }, [props.data]);
+  const other = data.total.other ? data.total.other : 0;
+
+  console.log('other',other)
 
   return (
     <View style={styles.Level}>
@@ -28,14 +20,14 @@ function Level(props) {
         <Text style={styles.heading,styles.cherry}>Confirmed</Text>
         <Text style={styles.cherry}>
           [
-          {isNaN(data.deltaconfirmed)
+          {isNaN(data.delta?.confirmed)
             ? ''
-            : data.deltaconfirmed > 0
-            ? '+' + formatNumber(data.deltaconfirmed)
+            : data.delta?.confirmed > 0
+            ? '+' + formatNumber(data.delta?.confirmed)
             : '+0'}
           ]
         </Text>
-        <Text style={[styles.heading1,styles.cherry]}>{formatNumber(data.confirmed)} </Text>
+        <Text style={[styles.heading1,styles.cherry]}>{formatNumber(data.total?.confirmed)} </Text>
       </Animatable.View>
 
       <Animatable.View
@@ -45,8 +37,7 @@ function Level(props) {
       >
         <Text style={styles.heading,styles.blue}>Active</Text>
         <Text>&nbsp;</Text>
-        {/* <Text>[{props.deltas ? props.deltas.confirmeddelta-(props.deltas.recovereddelta+props.deltas.deceaseddelta) >=0 ? '+'+(props.deltas.confirmeddelta-(props.deltas.recovereddelta+props.deltas.deceaseddelta)).toString() : '+0' : ''}]</Text>*/}
-        <Text style={[styles.heading1,styles.blue]}>{formatNumber(data.active)}</Text>
+        <Text style={[styles.heading1,styles.blue]}>{formatNumber(data.total?.confirmed - (data.total?.recovered + data.total?.deceased + other))}</Text>
       </Animatable.View>
 
       <Animatable.View
@@ -57,15 +48,15 @@ function Level(props) {
         <Text style={styles.heading,styles.green}>Recovered</Text>
         <Text style={styles.green}>
           [
-          {isNaN(data.deltarecovered)
+          {isNaN(data.delta?.recovered)
             ? ''
-            : data.deltarecovered > 0
-            ? '+' + formatNumber(data.deltarecovered)
+            : data.delta?.recovered > 0
+            ? '+' + formatNumber(data.delta?.recovered)
             : '+0'}
           ]
         </Text>
         <Text style={[styles.heading1,styles.green]}>
-          {formatNumber(data.recovered)}{' '}
+          {formatNumber(data.total?.recovered)}{' '}
         </Text>
       </Animatable.View>
 
@@ -77,14 +68,14 @@ function Level(props) {
         <Text style={styles.heading,styles.grey}>Deceased</Text>
         <Text style={styles.grey}>
           [
-          {isNaN(data.deltadeaths)
+          {isNaN(data.delta?.deceased)
             ? ''
-            : data.deltadeaths > 0
-            ? '+' + formatNumber(data.deltadeaths)
+            : data.delta?.deceased > 0
+            ? '+' + formatNumber(data.delta?.deceased)
             : '+0'}
           ]
         </Text>
-        <Text style={[styles.heading1,styles.grey]}>{formatNumber(data.deaths)}</Text>
+        <Text style={[styles.heading1,styles.grey]}>{formatNumber(data.total?.deceased)}</Text>
       </Animatable.View>
     </View>
   );

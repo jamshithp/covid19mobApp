@@ -14,13 +14,13 @@ const DistrictWiseData = (props) => {
     <View>
       <Text style={styles.lastupdatedtime}>
         Last Updated on{' '}
-        {props.districts && Object.keys(props.districts[0]).length
+        {props.districts && props.lastupdatedtime && Object.keys(props.districts[0]).length
         ? formatDateAbsolute(props.lastupdatedtime)
         : ''}
       </Text>
       {props.vaccinationData?.total && <VaccinationGraph data={props.vaccinationData}/>}
       <View>
-        <Level data={props.states}/>
+        {/* <Level data={props.states}/> */}
       </View>
       <Animated.ScrollView
         overScrollMode={'never'}
@@ -38,7 +38,6 @@ const DistrictWiseData = (props) => {
           title={district.name}
           item={district}
           key={district.id}
-          zones={props.zones[district.name]}
           screen='district'
         />
         )}

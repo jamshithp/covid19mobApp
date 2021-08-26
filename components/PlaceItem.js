@@ -29,44 +29,42 @@ class PlaceItem extends Component {
   render() {
     const item = this.props.item;
     const isState = this.props.screen === 'state' ? true:false,
-    showdeltaConfirmed = this.props.screen === 'state' ? item.deltaconfirmed !== '0':item.delta.confirmed !== 0,
-    showdeltaRecovered = this.props.screen === 'state' ? item.deltarecovered !== '0':item.delta.recovered !== 0,
-    showdeltaDeath = this.props.screen === 'state' ? item.deltadeaths !== '0':item.delta.deceased !== 0,
-    zone= this.props.zones? this.props.zones.zone:false,
     shadow= isState && 'shadow' ;
+    const other = item.total.other ? item.total.other : 0;
+
     return (
       <Animatable.View
           duration={700}
           //transition="backgroundColor"
           animation="slideInRight"
         >
-      <TouchableOpacity onPress={this.props.onSelect} style={[styles.placeItem,styles[zone],styles[shadow]]}>
-        <View style={[styles.circle,styles[`${zone}Circle`]]} ><Text style={zone?styles.zoneText:styles.stateCode}>{isState?item.statecode:zone}</Text></View>
+      <TouchableOpacity onPress={this.props.onSelect} style={[styles.placeItem,styles[shadow]]}>
+        {isState && <View style={[styles.circle]} ><Text style={styles.stateCode}>{item.statecode}</Text></View>}
         <View style={styles.infoContainer}>
           <Text style={styles.title}>{this.props.title}</Text>
           <View style={styles.ItemContainer}>
-            <Text style={styles.item}>Confirmed: {item.confirmed}</Text>
-            {showdeltaConfirmed &&
+            <Text style={styles.item}>Confirmed: {item.total.confirmed}</Text>
+            {item.delta?.confirmed &&
             <View style={styles.ItemContainer}>
               <Ionicons name="md-arrow-up" size={18} color={'red'} />
-              <Text style={styles.subitemRed}>{isState ? item.deltaconfirmed : item.delta.confirmed}</Text>
+              <Text style={styles.subitemRed}>{item.delta?.confirmed}</Text>
             </View>}
           </View>
-          <Text style={styles.item}>Active: {item.active}</Text>
+          <Text style={styles.item}>Active: {item.total?.confirmed - (item.total.recovered + item.total.deceased + other)}</Text>
           <View style={styles.ItemContainer}>
-            <Text style={styles.item}>Recovered: {item.recovered}</Text>
-            {showdeltaRecovered &&
+            <Text style={styles.item}>Recovered: {item.total.recovered}</Text>
+            {item.delta?.recovered &&
             <View style={styles.ItemContainer}>
               <Ionicons name="md-arrow-up" size={18} color={'green'} />
-              <Text style={styles.subitemGreen}>{isState ? item.deltarecovered : item.delta.recovered}</Text>
+              <Text style={styles.subitemGreen}>{item.delta?.recovered}</Text>
             </View>}
           </View>
           <View style={styles.ItemContainer}>
-            <Text style={styles.item}>Deaths: {isState ?item.deaths:item.deceased}</Text>
-            {showdeltaDeath &&
+            <Text style={styles.item}>Deaths: {item.total.deceased}</Text>
+            {item.delta?.deceased &&
             <View style={styles.ItemContainer}>
               <Ionicons name="md-arrow-up" size={18} color={'grey'} />
-              <Text style={styles.subitemGrey}>{isState ? item.deltadeaths : item.delta.deaths}</Text>
+              <Text style={styles.subitemGrey}>{item.delta?.deceased}</Text>
             </View>}
           </View>
         </View>
@@ -100,10 +98,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 1,
     elevation: 5,
-  },
-  zoneText:{
-    fontSize:17,
-    fontFamily:'open-sans-bold',
   },
   shareBtn:{
     //marginLeft:10,

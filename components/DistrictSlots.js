@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Platform, Text, View, StyleSheet,Button } from 'react-native';
+import { Platform, Text, View, StyleSheet,Button,ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 import axios from 'axios';
 import VaccinationGraph from './VaccinationGraph';
@@ -13,7 +13,8 @@ export default function DistrictSlots(props) {
   useEffect(() => {
     if(!fetch) {
       (async () => {
-        const { status } = await Location.requestBackgroundPermissionsAsync();
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        console.log('')
         if (status !== 'granted') {
           setErrorMsg('Permission to access location was denied');
         }
@@ -40,6 +41,7 @@ export default function DistrictSlots(props) {
 
   return (
     <View>
+      {!props.data && !fetch && <ActivityIndicator size="large" />}
       {props.data?.total && <VaccinationGraph data={props.data}/>}
       {fetch && 
       <View style={[styles.container]}>

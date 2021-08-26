@@ -3,6 +3,8 @@ import { View, Picker, StyleSheet ,Text ,Button ,ScrollView , ImageBackground}  
 import axios from 'axios';
 import {Colors} from '../constants';
 import AccordionView from '../components/Accordion';
+import HeaderButton from '../components/HeaderButton';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 export default function ServicesScreen() {
     const [data, setData] = useState([]);
@@ -310,6 +312,23 @@ export default function ServicesScreen() {
   );
 }
 
+ServicesScreen.navigationOptions = navData => {
+  return {
+    headerTitle: 'Services',
+    headerLeft: ()=>
+    <HeaderButtons HeaderButtonComponent={HeaderButton}>
+      <Item
+        title="Menu"
+        iconName="ios-menu"
+        onPress={() => {
+          navData.navigation.toggleDrawer();
+        }}
+      />
+    </HeaderButtons>
+  ,
+  };
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -348,9 +367,3 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 });
-
-ServicesScreen.navigationOptions = navData => {
-  return {
-    headerTitle: 'Services',
-  };
-};

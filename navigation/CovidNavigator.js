@@ -122,9 +122,9 @@ const tabScreenConfig = {
       tabBarColor: Colors.accentColor,
       tabBarLabel:
         Platform.OS === 'android' ? (
-          <Text >covid Trends</Text>
+          <Text >Covid Trends</Text>
         ) : (
-          'covid Trends'
+          'Covid Trends'
         )
     }
   },
@@ -163,10 +163,11 @@ const tabScreenConfig = {
 const CovidTabNavigator =
   Platform.OS === 'android'
     ? createMaterialBottomTabNavigator(tabScreenConfig, {
-        activeTintColor: 'white',
+        activeTintColor: 'tomato',
+        inactiveTintColor:'gray',
         shifting: true,
         barStyle: {
-          backgroundColor: Colors.primaryColor
+          backgroundColor: 'white',
         }
       })
     : createBottomTabNavigator(tabScreenConfig, {
@@ -186,9 +187,20 @@ const MainNavigator = createDrawerNavigator(
     Home: {
       screen: CovidTabNavigator,
       navigationOptions: {
-        drawerLabel: 'Home'
+        drawerLabel: 'Home',
+        style: {
+          backgroundColor: '#c6cbef',
+          width: 240,
+          height:500,
+        },
       }
     },
+    covidTrends: {
+      screen: CovidTrendsScreen,
+      navigationOptions: {
+        drawerLabel: 'Covid Trends'
+      }
+    }, 
     vaccination: {
       screen: VaccinationNavigator,
       navigationOptions: {
@@ -205,6 +217,11 @@ const MainNavigator = createDrawerNavigator(
   {
     contentOptions: {
       activeTintColor: Colors.primary,
+      drawerStyle : {
+        backgroundColor: '#c6cbef',
+        width: 240,
+        height:800,
+      },
     }
   }
 );

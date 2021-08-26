@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, StyleSheet, Platform, FlatList  } from 'react-native';
+import { View, Text, StyleSheet, Platform, FlatList ,ActivityIndicator } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import axios from 'axios';
 import HeaderButton from '../components/HeaderButton';
@@ -12,6 +12,9 @@ import {
 
 import PlaceItem from '../components/PlaceItem';
 import Level from '../components/level';
+import { style } from 'd3';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { STATE_CODES } from '../constants';
 
 
 function CovidTrendsScreen(props) {
@@ -72,24 +75,31 @@ function CovidTrendsScreen(props) {
 
     const getLevel= (states) => {
       if(states && states.length){
-        return <Level data={states[0]} />;
+        return <Level data={mainData['TT']} />;
       }
     }
 
-    const sortedStates = Object.keys(states)
+    const sortedStates = Object.keys(mainData)
+    .filter(stateCode=> stateCode !== 'TT' && stateCode !== 'UN')
+    .map(key=> {
+      const state = mainData[key];
+      state.state = STATE_CODES[key];
+      state.statecode = key;
+      return state;
+    })
     .sort(
       (a, b) =>
-      states[b].confirmed - states[a].confirmed
-    ).map(key=> {
-      const state = states[key];
-      return state;
-    });
+      b.total.confirmed - a.total.confirmed
+    );
   
     return (
       <View>
-        {getLevel(states)}
-        <FlatList
-          data={sortedStates.slice(1)}
+        {mainData.length < 1 && <View style={styles.horizontal}>
+        <ActivityIndicator size={200} color={Colors.primary}/>
+        </View>}
+        {getLevel(sortedStates)}
+        { <FlatList
+          data={sortedStates}
           keyExtractor={item => item.statecode}
           renderItem={itemData => (
             <PlaceItem
@@ -98,37 +108,25 @@ function CovidTrendsScreen(props) {
               screen='state'
               key={itemData => itemData.item.statecode}
               onSelect={() => {
-                const districtData = stateDistrictWiseData[itemData.item.state].districtData;
+                const districtData = itemData.item.districts;
                 props.navigation.navigate('state', {
                   placeTitle: itemData.item.state,
                   districtData:districtData,
-                  zones:districtZones[itemData.item.state],
                   states:itemData.item,
-                  lastUpdated:itemData.item.lastupdatedtime,
+                  lastUpdated:itemData.item.meta?.lastupdatedtime,
                   vaccinationData:mainData[itemData.item.statecode],
                 });
               }}
             />
           )}
-        />
+        />}
       </View>
     );
   }
 
   CovidTrendsScreen.navigationOptions = navData => {
   return {
-    headerTitle: 'COVID19 INDIA',
-    headerRight:()=>
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Updates"
-          iconName={Platform.OS === 'android' ? 'md-notifications' : 'ios-add'}
-          onPress={() => {
-            navData.navigation.navigate('Updates');
-          }}
-        />
-      </HeaderButtons>
-    ,
+    headerTitle: 'COVID UPDATES',
     headerLeft: ()=>
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
@@ -139,11 +137,16 @@ function CovidTrendsScreen(props) {
           }}
         />
       </HeaderButtons>
+    ,
   };
 };
 
 const styles = StyleSheet.create({
-
+  horizontal:{
+    justifyContent: "center",
+    padding: 10,
+    height:'100%'
+  }
   });
 
 export default CovidTrendsScreen;

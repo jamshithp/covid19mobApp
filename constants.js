@@ -1,5 +1,5 @@
 export const Colors = {
-  primary: '#fc9208'
+  primary: '#2874F0'
 }
 
 export const MAP_TYPES = {
@@ -27,49 +27,46 @@ export const MAP_STATISTICS = {
   PER_MILLION: 1,
 };
 
-export const ZONE_DETAILS = {
-  Red: [
-    "Movement of individuals/vehicles for permitted activities (Two persons besides the driver for four-wheelers and no pillion riding for two-wheelers).",
-    "Special economic zones, export-oriented units, industrial estates/townships with access control in urban areas that fall into red zones have been permitted to resume operations. Manufacturing units producing essential goods (medical devices, pharmaceuticals) are also allowed to function in red zones.",
-    "In red zones, manufacturing of IT hardware and the jute industry along with manufacturers of packaging material have been given the go-ahead to operate, provided that safety guidelines are followed.",
-    "Construction activities in rural areas that fall in red zones, has been permitted only to in-situ construction where the workers are available on site. The construction of renewable energy projects is also allowed.",
-    "In red areas, all standalone shops (both in urban and rural areas) and shops in residential complexes have been allowed to reopen for business.",
-    "In red zones, e-commerce activities are allowed limited to essential goods.",
-    "Private offices in red zones will be allowed to operate with 33 per cent of their strength.",
-    "Government offices in red zones will be allowed to function with senior officers of the Deputy Secretary level and above at full strength, with the remaining staff attending up to 33 per cent as per requirement.",
-    "Even in red zones, defense and security services, health and family welfare, police, prisons, home guards, civil defence, fire and emergency services, disaster management and related services, National Informatics Centre (NIC), customs, Food Corporation of India (FCI), National Cadet Corps (NCC), Nehru Yuvak Kendra (NYK) and Municipal services have been allowed to function with no restrictions.",
-    "All industrial and construction activities in rural areas that fall in red zones have been allowed. These include MNREGA works, food-processing units and brick kilns.",
-    "In Red zones, all agriculture and animal husbandry (including inland and marine fisheries) activities, inclusive of their supply chain, will be able to function",
-    "All health services, including AYUSH, have been permitted to operate in red zones.",
-    "Banks, NBFCs, insurance and capital market activities along with credit co-operative societies will function in red zones.",
-    "In red zones, homes for children, senior citizens and widows (including Anganwadis) have been allowed to function.",
-    "Apart from courier/postal services, public utility offices (including internet) will remain open in red zones.",
-    "The MHA order further clarifies that print and electronic media, IT and IT-enabled services, data and call centres, cold storage and warehousing services, private security and facility management services, and services provided by self-employed persons, except for barbers are permitted in red zones."
-  ],
-  Orange:[
-    "The MHA has stated that districts that are neither defined as green nor red zones will fall into the category of orange zones. A red zone will be classified as an orange zone if it reports no new confirmed case of Covid-19 in 21 days.",
-    "Taxis and cab operators will be allowed to operate in orange zones, with 1 driver and two passengers.",
-    "The inter-district movement of individuals and vehicles is allowed only for permitted activities.",
-    "Private four-wheelers will be allowed to ply on the roads only with two passengers apart from a driver.",
-    "All economic activities that have been permitted in red zones will also be allowed to resume in orange zones from May 4 onwards. These include SEZs, EOUs, and manufacturing units of essential goods, IT hardware, jute and packaging material.",
-    "In orange zones, only in-situ construction will be allowed in urban areas apart from construction of renewable energy projects."
-  ],
-  Green:[
-    "All activities are permitted except those prohibited throughout the country, irrespective of the zonal division. Buses can operate with up to 50 per cent seating capacity and bus depots can operate with up to 50 per cent capacity.",
-    "All goods traffic is permitted. No state/ UT shall stop the movement of cargo for cross land-border trade under treaties with neighbouring countries.",
-    "No separate pass of any sort is needed for such movement, which is essential for maintaining the supply chain of goods and services across the country during the lockdown period.",
-    "Air, rail, sea and metro train services are not allowed. These services are not allowed in any of the zones.",
-    "E-commerce is allowed in non-essential items in green zone and also in orange zones.",
-    "Sale of liquor has been allowed in all zones. However, if the shops are located in malls, marketing complexes and in containment areas, they cannot open.",
-    "Shops selling liquor, paan, gutka, tobacco etc. in public places will ensure minimum six feet distance (2 gaz ki doori) from each other, and also that not more than 5 persons are present at one time at the shop,reads the government order.",
-    "In all zones, person above 65 years, persons with co-morbidities, pregnant women and children below 10 years shall stay at home.",
-    "OPDs and medical clinics shall be permitted to operate in red, orange and green zones with all social distancing norms.",
-    "The states/ UTs can allow only select activities from list of permitted activities and impose additional restrictions based on their assessment of the situation. The primary objective, the Centre's notification says, is to keep the spread of Covid-19 in check.",
-    "School, college, institutions , hospitality services , including hotels and restaurants, place of large gathering , such as cinema halls, malls, gym, sports complex, social, political, cultural and all kind of gathering, religious place/place of worship for public remain closed during lockdown 3.0.",
-    "Movement of stranded foreign nationals, persons released from quarantine, stranded migrant workers and students, pilgrims, tourists and other such persons is to be facilitated following the Standard Operating Protocols (SOPs) issued by Union home ministry.",
-  ]  
+export const STATE_NAMES = {
+  AP: 'Andhra Pradesh',
+  AR: 'Arunachal Pradesh',
+  AS: 'Assam',
+  BR: 'Bihar',
+  CT: 'Chhattisgarh',
+  GA: 'Goa',
+  GJ: 'Gujarat',
+  HR: 'Haryana',
+  HP: 'Himachal Pradesh',
+  JH: 'Jharkhand',
+  KA: 'Karnataka',
+  KL: 'Kerala',
+  MP: 'Madhya Pradesh',
+  MH: 'Maharashtra',
+  MN: 'Manipur',
+  ML: 'Meghalaya',
+  MZ: 'Mizoram',
+  NL: 'Nagaland',
+  OR: 'Odisha',
+  PB: 'Punjab',
+  RJ: 'Rajasthan',
+  SK: 'Sikkim',
+  TN: 'Tamil Nadu',
+  TG: 'Telangana',
+  TR: 'Tripura',
+  UT: 'Uttarakhand',
+  UP: 'Uttar Pradesh',
+  WB: 'West Bengal',
+  AN: 'Andaman and Nicobar Islands',
+  CH: 'Chandigarh',
+  DN: 'Dadra and Nagar Haveli and Daman and Diu',
+  DL: 'Delhi',
+  JK: 'Jammu and Kashmir',
+  LA: 'Ladakh',
+  LD: 'Lakshadweep',
+  PY: 'Puducherry',
+  TT: 'India',
+  UN: 'Unassigned',
 };
-
 export const MAP_META = {
   India: {
     name: 'India',
@@ -335,6 +332,8 @@ export const STATE_CODES = {
   LA: 'Ladakh',
   LD: 'Lakshadweep',
   PY: 'Puducherry',
+  TT: 'India',
+  UN: 'Unassigned',
 };
 
 const stateCodes = [];

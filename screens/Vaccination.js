@@ -6,6 +6,8 @@ import moment from 'moment';
 import Slots from '../components/Slots';
 import PushNotification from '../components/PushNotification';
 import * as Animatable from 'react-native-animatable';
+import HeaderButton from '../components/HeaderButton';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 function Vaccination(props) {
   const [stateName, setStateName] = useState("");
@@ -257,6 +259,23 @@ const getDistrictsOptions = function () {
   );
 }
 
+Vaccination.navigationOptions = navData => {
+  return {
+    headerTitle: 'Vaccination',
+    headerLeft: ()=>
+    <HeaderButtons HeaderButtonComponent={HeaderButton}>
+      <Item
+        title="Menu"
+        iconName="ios-menu"
+        onPress={() => {
+          navData.navigation.toggleDrawer();
+        }}
+      />
+    </HeaderButtons>
+  ,
+  };
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -326,10 +345,5 @@ const styles = StyleSheet.create({
   },
 });
 
-Vaccination.navigationOptions = navData => {
-  return {
-    headerTitle: 'Vaccination'
-  };
-};
 
 export default Vaccination;
